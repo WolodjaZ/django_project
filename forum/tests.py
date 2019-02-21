@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from django.contrib.auth.models import User
 
+from forum.forms import TopicForm, CommentForm
 from forum.models import Topic, Comment
 
 
@@ -26,9 +27,9 @@ class TestTopic(TestCase):
 
     def test_owner(self):
         user = User.objects.create(username='alfred')
-        topic = Topic(owner=user, text='la')
+        topic = Topic(owner=user, text='la', subject='ta')
         self.assertEqual(topic.owner.username, 'alfred')
-        self.assertEqual(topic.__str__(), 'la alfred')
+        self.assertEqual(topic.__str__(), 'ta la')
 
 
 class TestComment(TestCase):
@@ -55,3 +56,34 @@ class TestComment(TestCase):
         self.assertEqual(comment.topic, topic)
         topic.delete()
         self.assertNotEqual(comment, None)
+
+class TestTopicForm(TestCase):
+
+    def test_topic_form_valdi(self):
+        form = TopicForm(data={
+            'text': 'hej',
+            'subject': 'cos',
+        })
+
+        self.assertTrue(form.is_valid())
+
+    def test_topic_form_is_not_valid(self):
+        form = TopicForm(data={})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 2)
+
+class TestCommentForm(TestCase):
+
+    def test_comment_form_valid(self):
+        form = CommentForm(data={
+            'text': 'hej'
+        })
+
+        self.assertTrue(form.is_valid())
+
+    def test_comment_form_is_not_valid(self):
+        form = CommentForm(data={})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 1)
