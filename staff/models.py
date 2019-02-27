@@ -8,13 +8,14 @@ academic_rank_choices = (
         ('doc', 'docent'),
         ('mgr', 'magister'),)
 
+
 class Staff(models.Model):
     """Information about academic staff"""
     firstname = models.CharField(max_length=30)
     secondname = models.CharField(max_length=30)
     academic_rank = models.CharField(choices=academic_rank_choices, null=True, max_length=3)
     link = models.URLField(null=True)
-    score = models.FloatField(db_column='score', null=True, blank=True)
+    score = models.DecimalField(default=None, blank=True, decimal_places=2, max_digits=3)
     files = models.FileField(blank=True)
 
     def name(self):
@@ -27,6 +28,7 @@ class Staff(models.Model):
 
     def __str__(self):
         return self.name()
+
 
 class Comment(models.Model):
     """Comments on staff"""
@@ -42,3 +44,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[:50] + '...'
+

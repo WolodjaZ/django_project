@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load admin_urls%}
+
+{% block head %}
+    <title>Profile</title>
+{% endblock head %}
+
+{% block content %}
+    <div class="container">
+        <h1>Profile</h1>
+        <p>Pseudonim: {{ user.username }}</p>
+        <p>Imie: {{ user.first_name }}</p>
+        <p>Nazwisko: {{ user.last_name }}</p>
+        <p>Mail: {{ user.email }}</p>>
+        {% if user.is_superuser %}
+        <p>
+        	Idz do strony admina <a href="{% url 'admin:index' %}"> Admin </a>
+        </p>
+        {% endif %}
+    </div>
+{% endblock content %}

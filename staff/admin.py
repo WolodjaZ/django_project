@@ -1,3 +1,6 @@
 from django.contrib import admin
+from staff.models import Staff, Comment
 
-# Register your models here.
+
+admin.site.register(Staff)
+admin.site.register(Comment)
